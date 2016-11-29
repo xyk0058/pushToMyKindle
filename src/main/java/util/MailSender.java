@@ -17,6 +17,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 
 import component.IMailSender;  
 
@@ -43,8 +44,9 @@ public class MailSender implements IMailSender {
             int port = Integer.parseInt(mailprop.getProperty("mail.send_port")); //端口  
             String host = mailprop.getProperty("mail.send_host"); //邮件服务器
             String toMail = mailprop.getProperty("mail.to_user"); //接收邮件地址
+            
   
-            Properties props = new Properties();  
+            Properties props = new Properties();
             props.put("mail.smtp.host", host);
             props.put("mail.smtp.auth", "true");
             Session session = Session.getDefaultInstance(props);  
@@ -62,16 +64,14 @@ public class MailSender implements IMailSender {
             BodyPart contentPart = new MimeBodyPart();
             contentPart.setText("Convert");
             
-            contentPart.setHeader("Content-Type", "text/html; charset=GBK");  
+            contentPart.setHeader("Content-Type", "text/html; charset=UTF-8");  
             multipart.addBodyPart(contentPart);
 
             File usFile = new File(filePath);
             MimeBodyPart fileBody = new MimeBodyPart();
             DataSource source = new FileDataSource(filePath);
             fileBody.setDataHandler(new DataHandler(source));
-            sun.misc.BASE64Encoder enc = new sun.misc.BASE64Encoder();
-            fileBody.setFileName("=?GBK?B?"
-                    + enc.encode(usFile.getName().getBytes()) + "?=");
+            fileBody.setFileName(MimeUtility.encodeText(usFile.getName()));		//MimeUtility防止中文名称乱码
             multipart.addBodyPart(fileBody);
   
             message.setContent(multipart);
@@ -87,9 +87,5 @@ public class MailSender implements IMailSender {
             e.printStackTrace();  
         }
 	}
-	
-	public static void main(String[] args) throws Exception{
-		
-	}
-	
+
 }
