@@ -1,23 +1,24 @@
 package util;
 
-import component.IMailSender;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Date;
+import java.util.Properties;
 
-import java.io.File;  
-import java.util.Date;  
-import java.util.Properties;  
-  
-import javax.activation.DataHandler;  
-import javax.activation.DataSource;  
-import javax.activation.FileDataSource;  
-import javax.mail.BodyPart;  
-import javax.mail.Message;  
-import javax.mail.Multipart;  
-import javax.mail.Session;  
-import javax.mail.Transport;  
-import javax.mail.internet.InternetAddress;  
-import javax.mail.internet.MimeBodyPart;  
-import javax.mail.internet.MimeMessage;  
-import javax.mail.internet.MimeMultipart;  
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import component.IMailSender;  
 
 /*********************************************
  * MailSender.java
@@ -29,12 +30,19 @@ public class MailSender implements IMailSender {
 
 	
 	public void sendFrom(String filePath) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub'
+		
 		try {
-            String smtpFromMail = "2603653389@qq.com";  //账号  
-            String pwd = "huangfei"; //密码
-            int port = 25; //端口  
-            String host = "mail.bjtu.edu.cn"; //邮件服务器
+			
+			Properties mailprop = new Properties();//属性集合对象
+			FileInputStream fis = new FileInputStream("../pushToMyKindle/src/main/resources/mail.properties");//属性文件流    
+			mailprop.load(fis);//将属性文件流装载到Properties对象中
+			
+            String smtpFromMail = mailprop.getProperty("mail.send_user");  //账号  
+            String pwd = mailprop.getProperty("mail.send_pwd"); //密码
+            int port = Integer.parseInt(mailprop.getProperty("mail.send_port")); //端口  
+            String host = mailprop.getProperty("mail.send_host"); //邮件服务器
+            String toMail = mailprop.getProperty("mail.to_user"); //接收邮件地址
   
             Properties props = new Properties();  
             props.put("mail.smtp.host", host);
@@ -80,7 +88,7 @@ public class MailSender implements IMailSender {
         }
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		
 	}
 	
