@@ -87,5 +87,22 @@ public class MailSender implements IMailSender {
             e.printStackTrace();  
         }
 	}
+	
+	public static void main(String[] args) {
+//		try {
+//			File root = new File("/Users/xyk0058/Downloads/Avengers/");
+//			File[] files = root.listFiles();
+//			for (int i=0; i<files.length; i++) {
+//				File file = files[i];
+//				String filename = file.getAbsolutePath();
+//				if (file.isFile() && filename.contains(".mobi")) {
+//					System.out.println(file.getAbsolutePath());
+//					new MailSender().sendFrom(filename);
+//				}
+//			}
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
+	}
 
 }
